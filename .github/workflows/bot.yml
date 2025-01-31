@@ -1,26 +1,15 @@
-name: Telegram Bot Scheduler
+name: Test Cron Trigger
 
 on:
   schedule:
-    - cron: '*/10 * * * *'  # Запуск каждые 10 минут по UTC
+    - cron: '* * * * *'  # Каждую минуту
   workflow_dispatch:  # Позволяет запуск вручную
 
 jobs:
-  bot-job:
+  test-job:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.10
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Run bot.py
-        run: python bot.py
+      - name: Print current date

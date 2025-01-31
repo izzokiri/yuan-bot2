@@ -2,7 +2,7 @@ name: Test Cron Trigger
 
 on:
   schedule:
-    - cron: '* * * * *'  # Каждую минуту
+    - cron: '* * * * *'  # Каждую минуту по UTC
   workflow_dispatch:  # Позволяет запуск вручную
 
 jobs:
@@ -13,3 +13,4 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Print current date
+        run: echo "Current date: $(date)"

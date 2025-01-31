@@ -2,7 +2,7 @@ name: Telegram Yuan Rate Bot
 
 on:
   schedule:
-    - cron: '55 2 * * *'  # Каждый день в 05:55 МСК (02:55 UTC)
+    - cron: '20 4 * * *'  # Каждый день в 05:55 МСК (02:55 UTC)
   workflow_dispatch:  # Позволяет запуск вручную
 
 jobs:

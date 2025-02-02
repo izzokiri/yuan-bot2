@@ -1,6 +1,7 @@
 import os
 import asyncio
 import logging
+from datetime import datetime
 from aiogram import Bot
 from dotenv import load_dotenv
 from get_yuan_rate import get_yuan_rate
@@ -16,7 +17,6 @@ logging.basicConfig(level=logging.INFO)
 # Инициализация бота
 bot = Bot(token=TOKEN)
 
-
 async def send_yuan_rate():
     try:
         rate = get_yuan_rate()
@@ -24,18 +24,31 @@ async def send_yuan_rate():
             logging.error("Не удалось получить курс юаня!")
             return
 
-        message = f"🇨🇳 Курс юаня на сегодня: {rate:.2f} ₽"
-        logging.info(f"Отправка сообщения: {message} в {CHANNEL_ID}")
+        # Дата в формате ДД.ММ.ГГГГ
+        today_date = datetime.now().strftime("%d.%m.%Y")
+        
+        # Рассчитываем курсы с надбавками
+        rate_200 = rate + 0.8
+        rate_2000 = rate + 0.7
+        rate_6000 = rate + 0.6
 
+        # Формируем сообщение
+        message = (
+            f"🇨🇳 Актуальный курс на {today_date}:\n"
+            f"От 200¥ - {rate_200:.2f}₽\n"
+            f"От 2000¥ - {rate_2000:.2f}₽\n"
+            f"От 6000¥ - {rate_6000:.2f}₽"
+        )
+
+        logging.info(f"Отправка сообщения: {message} в {CHANNEL_ID}")
         await bot.send_message(CHANNEL_ID, message)
         logging.info("Сообщение успешно отправлено!")
-
+    
     except Exception as e:
         logging.error(f"Ошибка при отправке сообщения: {e}")
-
+    
     finally:
-        await bot.session.close()  # Закрываем соединение с Telegram API
-
+        await bot.session.close()
 
 if __name__ == "__main__":
     asyncio.run(send_yuan_rate())
